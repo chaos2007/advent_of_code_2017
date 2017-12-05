@@ -1,3 +1,11 @@
 .vscode/
 catch.hpp
 driver.out
+
+
+.dub
+docs.json
+__dummy.html
+*.o
+*.obj
+
