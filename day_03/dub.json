@@ -4,5 +4,8 @@
 		"dpollitz"
 	],
 	"description": "A minimal D application.",
-	"copyright": "Copyright © 2017, dpollitz"
+	"copyright": "Copyright © 2017, dpollitz",
+	"dependencies": {
+		"dunit": "~>1.0.14"
+	}
 }
