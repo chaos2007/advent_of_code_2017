@@ -8,4 +8,6 @@ docs.json
 __dummy.html
 *.o
 *.obj
+day_03
+dub.selections.json
 
