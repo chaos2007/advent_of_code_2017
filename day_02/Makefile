@@ -1,0 +1,4 @@
+all:
+	groovy checksum.groovy
+	
+	
