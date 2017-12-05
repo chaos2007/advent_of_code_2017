@@ -1,22 +1,24 @@
-def get_min(line) {
-    return line.sort().first()
-}
-def get_max(line) {
-    return line.sort().last()
-}
-def get_checksum_part(line) {
-    def min = get_min(line)
-    def max = get_max(line)
-    return get_max(line) - get_min(line)
+def get_checksum_part_1(line) {
+    line.sort()
+    return line.last() - line.first()
 }
 def calculate_checksum(lines) {
-    def checks = lines.collect{ line ->
-        get_checksum_part(line)
+    lines.collect{ line -> get_checksum_part_1(line)}.sum()
+}
+def get_checksum_part_2(line) {
+    for( x in [line,line].combinations()) {
+        if( x[0] != x[1] && x[0] % x[1] == 0) {
+            return x[0] / x[1]
+        }
     }
-    return checks.sum()
+    return 0
 }
 
-def part_1 = [[4168,3925,858,2203,440,185,2886,160,1811,4272,4333,2180,174,157,361,1555],
+def calculate_checksum_2(lines) {
+    lines.collect{ line -> get_checksum_part_2(line)}.sum()
+}
+
+def checksums = [[4168,3925,858,2203,440,185,2886,160,1811,4272,4333,2180,174,157,361,1555],
 [150,111,188,130,98,673,408,632,771,585,191,92,622,158,537,142],
 [5785,5174,1304,3369,3891,131,141,5781,5543,4919,478,6585,116,520,673,112],
 [5900,173,5711,236,2920,177,3585,4735,2135,2122,5209,265,5889,233,4639,5572],
@@ -34,8 +36,10 @@ def part_1 = [[4168,3925,858,2203,440,185,2886,160,1811,4272,4333,2180,174,157,3
 [37,1069,166,1037,172,258,1071,90,497,1219,145,1206,143,153,1067,510]]
 
 
-assert 1 == get_min([5, 1, 9, 5])
-assert 9 == get_max([5, 1, 9, 5])
-assert 8 == get_checksum_part([5, 1, 9, 5])
+assert 8 == get_checksum_part_1([5, 1, 9, 5])
 assert 18 == calculate_checksum([[5,1,9,5],[7,5,3],[2,4,6,8]])
-assert 51833 == calculate_checksum(part_1)
+assert 51833 == calculate_checksum(checksums)
+assert 4 == get_checksum_part_2([5,9,2,8])
+assert 3 == get_checksum_part_2([9,4,7,3])
+assert 2 == get_checksum_part_2([3,8,6,5])
+assert 288 == calculate_checksum_2(checksums)
