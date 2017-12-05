@@ -9,7 +9,7 @@ test:
 	funit
 
 all:
-	gfortran main.f90 class_number_string.f90
+	gfortran main.f90 class_Captcha.f90
 	./a.out
 
 clean:
