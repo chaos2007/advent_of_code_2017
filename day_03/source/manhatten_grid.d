@@ -1,11 +1,19 @@
 import dunit.toolkit;
+import std.math;
+import std.conv;
 
 int get_distance(int number) {
-    return 0;
+	auto spiral_level = get_square_n(number);
+	//Get_horizontal distance.
+	return spiral_level - 1;
 }
 
 int get_square_n(int number) {
-    return 0;
+	auto spiral_level = 1;
+	while( number > (2*spiral_level-1)^^2 ) {
+		spiral_level++;
+	}
+	return spiral_level;
 }
 
 unittest
