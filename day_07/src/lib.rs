@@ -39,16 +39,15 @@ fn build_tree( nodes_string: String ) -> HashMap<String, Node> {
             }
         }
     }
-    /*
+    return res;
+}
+fn get_parent_node( nodes_string: String ) -> String {
+        /*
     while True:
         node = graph[key]
         if node["parent"] == None:
             return node
         key = node["parent"]*/
-
-    return res;
-}
-fn get_parent_node( nodes_string: String ) -> String {
     return "".to_string();
 }
 
