@@ -1,6 +1,8 @@
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 struct Node {
     name: String,
     weight: i32,
@@ -31,24 +33,42 @@ fn build_tree( nodes_string: String ) -> HashMap<String, Node> {
         res.insert(node.name.to_string(), node);
     }
     
-    for (name, node) in &res {
+    let mut res2 = res.clone();
+    for (name, node) in & mut res {
         for child in &(node.children) {
-            match res.get(child) {
+            match res2.get_mut(child) {
                 Some(element) => element.parent = name.to_string(),
                 None => println!("{} is not there..", child)
             }
         }
     }
-    return res;
+    return res2;
 }
 fn get_parent_node( nodes_string: String ) -> String {
-        /*
-    while True:
-        node = graph[key]
-        if node["parent"] == None:
-            return node
-        key = node["parent"]*/
+    let mut grid = build_tree( nodes_string );
+    let mut first = "".to_string();
+    for (name, number) in grid.iter() {
+        first = name.to_string();
+    }
+    loop {
+        if let Some(node) = grid.get_mut(&first) {
+            if node.parent == "".to_string() {
+                return first;
+            }
+            first = node.parent.to_string();
+        }
+        else {
+            break;
+        }
+
+    }
     return "".to_string();
+}
+
+fn get_new_weight( nodes_string: String ) -> i32 {
+    let mut grid = build_tree( nodes_string.to_string() );
+    let parent = get_parent_node( nodes_string.to_string() );
+    return 0;
 }
 
 #[cfg(test)]
@@ -69,20 +89,26 @@ mod tests {
 
     #[test]
     fn test_getting_simple_parent() {
-        let sample_input = "pbga (66)
-xhth (57)
-ebii (61)
-havc (66)
-ktlj (57)
-fwft (72) -> ktlj, cntj, xhth
-qoyq (66)
-padx (45) -> pbga, havc, qoyq
-tknk (41) -> ugml, padx, fwft
-jptl (61)
-ugml (68) -> gyxo, ebii, jptl
-gyxo (61)
-cntj (57)".to_string();
-        assert_eq!("tknk".to_string(), get_parent_node(sample_input));
+        let mut f = File::open("small_input.txt").expect("file not found");
+        let mut contents = String::new();
+        f.read_to_string(&mut contents);
+        assert_eq!("tknk".to_string(), get_parent_node(contents));
+    }
+
+    #[test]
+    fn test_getting_complicated_parent() {
+        let mut f = File::open("puzzle_input.txt").expect("file not found");
+        let mut contents = String::new();
+        f.read_to_string(&mut contents);
+        assert_eq!("vmpywg".to_string(), get_parent_node(contents));
+    }
+
+    #[test]
+    fn test_getting_new_weight_for_wrong_program() {
+        let mut f = File::open("small_input.txt").expect("file not found");
+        let mut contents = String::new();
+        f.read_to_string(&mut contents);
+        assert_eq!(60, get_new_weight(contents));
     }
 }
 
