@@ -97,38 +97,89 @@ fn get_new_weight( nodes_string: String ) -> i32 {
 
     //Determine incorrect_weight_offset
     if let Some(node) = calculated_grid.get(&parent) {
-        let weights : Vec<i32> = node.clone().children.into_iter().map(|child| {
+        let total_weights : Vec<i32> = node.clone().children.into_iter().map(|child| {
             if let Some(child_node) = calculated_grid.get(&child.to_string()) {
                 child_node.total_weight
             } else {
                 0
             }
         }).collect();
-        println!("Weights {:?}", weights);
-        // let correct = weights.groupBy(identity).maxBy(_._2.size)._1;
-        // println!("Correct {:?}", correct);
-        // for child in &(node.children) {
-        //     if let Some(child_node) = calculated_grid.get(&child.to_string()) {
-        //         println!("Name: {} Weight: {}", child_node.name, child_node.total_weight);
-        //     }
-        // }
+        let (correct, incorrect) = get_correct_and_incorrect_weights( &total_weights );
+        let difference = correct - incorrect;
+        for child in &(node.children) {
+            if let Some(child_node) = calculated_grid.get(&child.to_string()) {
+                if( incorrect == child_node.total_weight ) {
+                    return get_new_weight_recurse( &calculated_grid, difference, child_node.name.to_string() );
+                }
+            }
+        }
     }
     return 0;
 }
+
 fn get_new_weight_recurse( grid: &HashMap<String, Node>, offset: i32, current_node: String ) -> i32 {
-    //Are all children weights equal.  If so, return your own weight + offset.
-    //If not recall function on child that has the wrong offset.
+    if let Some(node) = grid.get(&current_node) {
+        let weights : Vec<i32> = node.clone().children.into_iter().map(|child| {
+            if let Some(child_node) = grid.get(&child.to_string()) {
+                child_node.total_weight
+            } else {
+                0
+            }
+        }).collect();
+        //Are all children weights equal.  If so, return your own weight + offset.
+        let (max, min) = get_max_and_min( &weights );
+        if( max == min ) {
+            return node.weight + offset;
+        } else {
+            let mut problem_child = max;
+            if( offset > 0 ) { 
+                problem_child = min;
+            }
+            for child in &(node.children) {
+            if let Some(child_node) = grid.get(&child.to_string()) {
+                if( problem_child == child_node.total_weight ) {
+                    return get_new_weight_recurse( &grid, offset, child_node.name.to_string() );
+                }
+            }
+        }
+        }
+    }
     return 0;
 }
 
 fn get_correct_and_incorrect_weights( numbers: &Vec<i32> ) -> (i32, i32) {
     let mut count : HashMap<i32,i32> = HashMap::new();
     {
-        let entry = count.entry(0).or_insert(0);
-        *entry += 1;
+        for number in numbers {
+            let entry = count.entry(*number).or_insert(0);
+            *entry += 1;
+        }
     }
-    println!("{:?}", count );
-    return (0, 0);
+    let mut max = (0, 0);
+    let mut min = (0,  <i32>::max_value());
+    for (key, value) in count.iter() {
+        if( *value > max.1 ) {
+            max = (*key, *value);
+        }
+        if( *value < min.1 ) {
+            min = (*key, *value);
+        }
+    }
+    return (max.0, min.0);
+}
+
+fn get_max_and_min( numbers: &Vec<i32> ) -> (i32, i32) {
+    let mut max = 0;
+    let mut min = <i32>::max_value();
+    for number in numbers {
+        if( *number < min ) {
+            min = *number;
+        }
+        if( *number > max ) {
+            max = *number;
+        }
+    }
+    return (max, min);
 }
 
 #[cfg(test)]
@@ -194,7 +245,7 @@ mod tests {
         let mut contents = String::new();
         f.read_to_string(&mut contents);
         let new_weight = get_new_weight( contents );
-        //assert_eq!(60, new_weight);
+        assert_eq!(60, new_weight);
     }
 
     #[test]
@@ -202,8 +253,8 @@ mod tests {
         let mut f = File::open("puzzle_input.txt").expect("file not found");
         let mut contents = String::new();
         f.read_to_string(&mut contents);
-        let grid = build_tree( contents );
-        let calculated_grid = fill_in_weights( grid );
+        let new_weight = get_new_weight( contents );
+        assert_eq!(1674, new_weight);
     }
 
     #[test]
@@ -212,6 +263,27 @@ mod tests {
         let (correct, incorrect) = get_correct_and_incorrect_weights(&numbers);
         assert_eq!(correct, 153);
         assert_eq!(incorrect, 148);
+    }
+
+    #[test]
+    fn test_finding_correct_incorrect_weight_same_value() {
+        let numbers = vec![153, 153, 153];
+        let (correct, incorrect) = get_correct_and_incorrect_weights(&numbers);
+        assert_eq!(correct, 153);
+        assert_eq!(incorrect, 153);
+    }
+
+    #[test]
+    fn test_finding_min_max() {
+        let mut numbers = vec![153, 153, 153];
+        let (max, min) = get_max_and_min(&numbers);
+        assert_eq!(max, 153);
+        assert_eq!(min, 153);
+
+        let mut numbers = vec![153, 151, 153];
+        let (max, min) = get_max_and_min(&numbers);
+        assert_eq!(max, 153);
+        assert_eq!(min, 151);
     }
 }
 
