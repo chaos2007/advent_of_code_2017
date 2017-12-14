@@ -11,7 +11,7 @@ removeGarbageStreams :: String -> String
 removeGarbageStreams [] = []
 removeGarbageStreams [x] = [x]
 removeGarbageStreams (a:xs)
-    | a == '<' = findEndingGarbageTag xs
+    | a == '<' = removeGarbageStreams (findEndingGarbageTag xs)
     | otherwise = a : removeGarbageStreams xs
 
 findEndingGarbageTag :: String -> String
@@ -25,3 +25,4 @@ findEndingGarbageTag (a:xs)
 
 cleanupStreams :: String -> String
 cleanupStreams x = removeGarbageStreams (removeIgnoredCharacters x)
+

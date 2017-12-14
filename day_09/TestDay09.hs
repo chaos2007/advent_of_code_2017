@@ -15,7 +15,16 @@ module TestDay09 where
     testCleanupStreams :: Test
     testCleanupStreams = 
         TestCase $ assertEqual "Should Remove everything." "" (cleanupStreams "<!>>")
+    testCleanupStreams2 :: Test
+    testCleanupStreams2 = 
+        TestCase $ assertEqual "Should Remove everything." "" (cleanupStreams "<{o\"i!a,<{i<a>")    
+    testCleanupStreams3 :: Test
+    testCleanupStreams3 = 
+        TestCase $ assertEqual "Should Remove everything." "{{},{},{},{}}" (cleanupStreams "{{<!!>},{<!!>},{<!!>},{<!!>}}")    
+
     
     
     main :: IO Counts
-    main = runTestTT $ TestList [testRemovingUnusedCharacters1, testRemovingUnusedCharacters2, testRemoveGarbageStream, testCleanupStreams]
+    main = runTestTT $ TestList [testRemovingUnusedCharacters1, testRemovingUnusedCharacters2, 
+                                 testRemoveGarbageStream, testCleanupStreams, testCleanupStreams2, 
+                                 testCleanupStreams3]
