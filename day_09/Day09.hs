@@ -1,4 +1,8 @@
 module Day09 where
 
-remove_ignored_characters :: String -> String
-remove_ignored_characters x = x
+removeIgnoredCharacters :: String -> String
+removeIgnoredCharacters [] = []
+removeIgnoredCharacters [x] = [x]
+removeIgnoredCharacters (a:b:xs)
+    | a == '!' = removeIgnoredCharacters xs
+    | otherwise = a: removeIgnoredCharacters (b:xs)
