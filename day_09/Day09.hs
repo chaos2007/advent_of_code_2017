@@ -26,3 +26,17 @@ findEndingGarbageTag (a:xs)
 cleanupStreams :: String -> String
 cleanupStreams x = removeGarbageStreams (removeIgnoredCharacters x)
 
+scoreStream :: String -> Int
+scoreStream x = scoreStream' (cleanupStreams x ) 0 0
+
+scoreStream' :: String -> Int -> Int -> Int
+scoreStream' [] acc level = acc
+scoreStream' [x] acc level
+    | x == '}' = acc + level
+    | otherwise = acc
+scoreStream' (x:xs) acc level
+    | x == '{' = scoreStream' xs acc (level + 1)
+    | x == '}' = scoreStream' xs (acc+level) (level - 1)
+    | otherwise = scoreStream' xs acc level
+
+
