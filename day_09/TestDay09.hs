@@ -2,16 +2,13 @@ module TestDay09 where
     
     import Test.HUnit
     import Day09
-    
-    testSafeHeadForEmptyList :: Test
-    testSafeHeadForEmptyList = 
-        TestCase $ assertEqual "Should return Nothing for empty list"
-                               1 1
-    
-    testSafeHeadForNonEmptyList :: Test
-    testSafeHeadForNonEmptyList =
-        TestCase $ assertEqual "Should return (Just head) for non empty list" 1
-                   2
+
+    testRemovingUnusedCharacters1 :: Test
+    testRemovingUnusedCharacters1 = 
+        TestCase $ assertEqual "Should Remove Ignored characters" "<>" (remove_ignored_characters "<!>>")
+    testRemovingUnusedCharacters2 :: Test
+    testRemovingUnusedCharacters2 =         
+        TestCase $ assertEqual "Should Remove Ignored characters" "<>" (remove_ignored_characters "<!!>")
     
     main :: IO Counts
-    main = runTestTT $ TestList [testSafeHeadForEmptyList, testSafeHeadForNonEmptyList]
+    main = runTestTT $ TestList [testRemovingUnusedCharacters1, testRemovingUnusedCharacters2]

@@ -1,3 +1,2 @@
 all:
-	ghc -o hello hello.hs
-	./hello
+	runghc TestDay09.hs
