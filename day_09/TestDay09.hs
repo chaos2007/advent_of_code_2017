@@ -9,6 +9,13 @@ module TestDay09 where
     testRemovingUnusedCharacters2 :: Test
     testRemovingUnusedCharacters2 =         
         TestCase $ assertEqual "Should Remove Ignored characters" "<>" (removeIgnoredCharacters "<!!>")
+    testRemoveGarbageStream :: Test
+    testRemoveGarbageStream =         
+        TestCase $ assertEqual "Should Remove garbage stream" "" (removeGarbageStreams "<>")
+    testCleanupStreams :: Test
+    testCleanupStreams = 
+        TestCase $ assertEqual "Should Remove everything." "" (cleanupStreams "<!>>")
+    
     
     main :: IO Counts
-    main = runTestTT $ TestList [testRemovingUnusedCharacters1, testRemovingUnusedCharacters2]
+    main = runTestTT $ TestList [testRemovingUnusedCharacters1, testRemovingUnusedCharacters2, testRemoveGarbageStream, testCleanupStreams]
