@@ -73,6 +73,15 @@ module TestDay09 where
     testCountGarbageStream7 :: Test
     testCountGarbageStream7 = 
         TestCase $ assertEqual "Should count garbage." 10 (countGarbageStream "<{o\"i!a,<{i<a>")
+    testCountGarbageStream8 :: Test
+    testCountGarbageStream8 = 
+        TestCase $ assertEqual "Should score stream." 5601 (countGarbageStream (unsafePerformIO . readFile $ "test_pattern.txt" ))
+    testCountGarbageStream9 :: Test
+    testCountGarbageStream9 = 
+        TestCase $ assertEqual "Should score stream." "" (createGarbageStream (removeIgnoredCharacters (unsafePerformIO . readFile $ "test_pattern.txt" )))
+    testCountGarbageStream10 :: Test
+    testCountGarbageStream10 = 
+        TestCase $ assertEqual "Should count garbage." "abababab" (createGarbageStream (removeIgnoredCharacters "{{<ab>},{<ab>},{<ab>},{<ab>}}"))
     
     
     
@@ -84,4 +93,5 @@ module TestDay09 where
                                  testScoringStreams6, testScoringStreams7,
                                  testScoringStreams8, testCleanupStreams7, testCountGarbageStream1,
                                  testCountGarbageStream2, testCountGarbageStream3, testCountGarbageStream4,
-                                 testCountGarbageStream5, testCountGarbageStream6, testCountGarbageStream7]
+                                 testCountGarbageStream5, testCountGarbageStream6, testCountGarbageStream7,
+                                 testCountGarbageStream8, testCountGarbageStream10]

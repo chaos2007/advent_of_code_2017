@@ -27,7 +27,20 @@ countGarbageStream :: String -> Int
 countGarbageStream x = length (createGarbageStream (removeIgnoredCharacters x))
 
 createGarbageStream :: String -> String
-createGarbageStream x = x
+createGarbageStream [] = []
+createGarbageStream [x] = []
+createGarbageStream (a:xs) 
+    | a == '<' = finishGarbageStream xs
+    | otherwise = createGarbageStream xs
+
+finishGarbageStream :: String -> String
+finishGarbageStream [] = []
+finishGarbageStream [x]
+    | x == '>' = []
+    | otherwise = [x]
+finishGarbageStream (a:xs)
+    | a == '>' = createGarbageStream xs
+    | otherwise = a : finishGarbageStream xs
 
 cleanupStreams :: String -> String
 cleanupStreams x = removeGarbageStreams (removeIgnoredCharacters x)
