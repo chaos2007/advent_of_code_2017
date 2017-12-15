@@ -1,9 +1,5 @@
-class Hash
-    def initialize()
-    end
-    
-    def test()
-        0
-    end
+
+def reverse_segment( chain, length, index )
+    chain
 end
     
