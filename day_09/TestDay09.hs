@@ -52,7 +52,28 @@ module TestDay09 where
     testScoringStreams4 :: Test
     testScoringStreams4 = 
         TestCase $ assertEqual "Should score stream." 11898 (scoreStream (unsafePerformIO . readFile $ "test_pattern.txt" ))
-
+    testCountGarbageStream1 :: Test
+    testCountGarbageStream1 = 
+        TestCase $ assertEqual "Should count garbage." 0 (countGarbageStream "<>")
+    testCountGarbageStream2 :: Test
+    testCountGarbageStream2 = 
+        TestCase $ assertEqual "Should count garbage." 17 (countGarbageStream "<random characters>")
+    testCountGarbageStream3 :: Test
+    testCountGarbageStream3 = 
+        TestCase $ assertEqual "Should count garbage." 3 (countGarbageStream "<<<<>")
+    testCountGarbageStream4 :: Test
+    testCountGarbageStream4 = 
+        TestCase $ assertEqual "Should count garbage." 2 (countGarbageStream "<{!>}>")
+    testCountGarbageStream5 :: Test
+    testCountGarbageStream5 = 
+        TestCase $ assertEqual "Should count garbage." 0 (countGarbageStream "<!!>")
+    testCountGarbageStream6 :: Test
+    testCountGarbageStream6 = 
+        TestCase $ assertEqual "Should count garbage." 0 (countGarbageStream "<!!!>>")
+    testCountGarbageStream7 :: Test
+    testCountGarbageStream7 = 
+        TestCase $ assertEqual "Should count garbage." 10 (countGarbageStream "<{o\"i!a,<{i<a>")
+    
     
     
     main :: IO Counts
@@ -61,4 +82,6 @@ module TestDay09 where
                                  testCleanupStreams3, testScoringStreams1, testScoringStreams2,
                                  testScoringStreams3, testScoringStreams4, testScoringStreams5,
                                  testScoringStreams6, testScoringStreams7,
-                                 testScoringStreams8, testCleanupStreams7]
+                                 testScoringStreams8, testCleanupStreams7, testCountGarbageStream1,
+                                 testCountGarbageStream2, testCountGarbageStream3, testCountGarbageStream4,
+                                 testCountGarbageStream5, testCountGarbageStream6, testCountGarbageStream7]

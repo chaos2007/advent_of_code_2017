@@ -23,6 +23,12 @@ findEndingGarbageTag (a:xs)
     | a == '>' = xs
     | otherwise = findEndingGarbageTag xs
 
+countGarbageStream :: String -> Int
+countGarbageStream x = length (createGarbageStream (removeIgnoredCharacters x))
+
+createGarbageStream :: String -> String
+createGarbageStream x = x
+
 cleanupStreams :: String -> String
 cleanupStreams x = removeGarbageStreams (removeIgnoredCharacters x)
 
