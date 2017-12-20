@@ -10,3 +10,13 @@ __dummy.html
 *.obj
 dub.selections.json
 
+day_11/target
+day_11/classes
+day_11/checkouts
+day_11/pom.xml
+day_11/pom.xml.asc
+day_11/*.jar
+lein
+day_11/*.class
+day_11/.lein-*
+day_11/.nrepl-port
