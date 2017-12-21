@@ -20,9 +20,11 @@
   (def direction_tuples (map get_direction_tuple split_directions))
   (reduce 
     (fn [current_loc, direction] 
-      [(+ (nth current_loc 0) (nth direction 0)), (+ (nth current_loc 1) (nth direction 1))]
+      [(+ (nth current_loc 0) (nth direction 0)), 
+       (+ (nth current_loc 1) (nth direction 1))
+      ]
     )
-    [0.0,0.0]
+    [0.0, 0.0]
     direction_tuples
   )
 )
