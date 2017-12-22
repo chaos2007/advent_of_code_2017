@@ -88,3 +88,30 @@
   [file]
   (find_lost_kid (slurp file))
 )
+
+(defn furthest_traveled_recurse
+  "recursive"
+  [origin, current_node, directions, max_distance]
+  (if (empty? directions)
+    max_distance
+    (do 
+      (def direction (first directions))
+      (def node [(+ (nth current_node 0) (nth direction 0)), (+ (nth current_node 1) (nth direction 1))])
+      (def new_max (calculate_distance origin node 0))
+      (recur origin node (rest directions) (if (> new_max max_distance) new_max max_distance))
+    )
+  )
+)
+(defn furthest_ever_traveled
+  "Find furthest ever traveled."
+  [direction_string]
+  (def split_directions (break_up_directions direction_string))
+  (def direction_tuples (map get_direction_tuple split_directions))
+  (furthest_traveled_recurse [0.0,0.0] [0.0,0.0] direction_tuples 0)
+)
+
+(defn furthest_ever_traveled_from_file
+  "Given string find furthest ever traveled."
+  [file]
+  (furthest_ever_traveled (slurp file))
+)

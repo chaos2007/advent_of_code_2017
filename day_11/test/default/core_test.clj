@@ -79,3 +79,13 @@
     (is (= 805 (find_lost_kid_from_file "puzzle_input.txt")))
   )
 )
+
+(deftest find-furthest-traveled
+  (testing "find-kid"
+    (is (= 3 (furthest_ever_traveled "ne,ne,ne")))
+    (is (= 2 (furthest_ever_traveled "ne,ne,sw,sw")))
+    (is (= 2 (furthest_ever_traveled "ne,ne,s,s")))
+    (is (= 3 (furthest_ever_traveled "se,sw,se,sw,sw")))
+    (is (= 1535 (furthest_ever_traveled_from_file "puzzle_input.txt")))
+  )
+)
