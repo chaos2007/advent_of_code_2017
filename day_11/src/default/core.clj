@@ -28,3 +28,63 @@
     direction_tuples
   )
 )
+
+(defn is_on_main_path
+  "Determine if currently on main path to the origin"
+  [origin, current_node]
+  (def difference [(- (nth current_node 0) (nth origin 0)), (- (nth current_node 1) (nth origin 1))])
+  (def above_or_below (= (nth origin 0) (nth current_node 0)))
+  (def first_diagonal (= (/ (nth difference 0) 2) (nth difference 1)))
+  (def second_diagonal (= (* (/ (nth difference 0) 2) -1) (nth difference 1)))
+  (or above_or_below first_diagonal second_diagonal)
+)
+
+(defn head_toward_goal
+  "Determine step to get closer to goal."
+  [origin, current_node]
+  (def on_column (= (nth origin 0) (nth current_node 0)))
+  (def difference [(- (nth current_node 0) (nth origin 0)), (- (nth current_node 1) (nth origin 1))])
+  (if on_column 
+    (if (< (nth origin 1) (nth current_node 1))
+      [0.0, -1.0]
+      [0.0, 1.0]
+    )
+    (if (neg? (nth difference 0) )
+      (if (neg? (nth difference 1))
+        [1.0, 0.5]
+        [1.0, -0.5]
+      )
+      (if (neg? (nth difference 1))
+        [-1.0, 0.5]
+        [-1.0, -0.5]
+      )
+    )
+  )
+)
+
+
+(defn calculate_distance
+  "Calculate distance"
+  [origin, current_node, step]
+  (if (= current_node origin)
+    step
+    (do 
+      (def direction (head_toward_goal origin current_node))
+      (def new_node [(+ (nth current_node 0) (nth direction 0)), (+ (nth current_node 1) (nth direction 1))])
+      (recur origin new_node (+ step 1))
+    )
+  )
+)
+
+(defn find_lost_kid
+  "Given string find lost kid."
+  [direction_string]
+  (def kid (figure_out_coordinate direction_string))
+  (calculate_distance [0.0,0.0] kid 0)
+)
+
+(defn find_lost_kid_from_file
+  "Given string find lost kid."
+  [file]
+  (find_lost_kid (slurp file))
+)
